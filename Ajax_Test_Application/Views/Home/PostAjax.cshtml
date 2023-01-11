@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "PostAjax";
+}
+
+<h1>會員註冊_上課練習</h1>
+
+
+
+<div>
+    <!-- 要用FormData 要給form 表單name 屬性 -->
+    <form name="userInfo">
+        <div>
+            <lable class="form-label">姓名</lable>
+            <input type="text" id="Name" name="Name" class="form-control" />
+        </div>
+
+        <div>
+            <lable class="form-label">Age</lable>
+            <input type="text" id="Age" name="Age" class="form-control" />
+        </div>
+        <div>
+            <lable class="form-label">Email</lable>
+            <input type="text" id="Email" name="Email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">圖片上傳</label>
+            <input class="form-control" type="file" id="photo" name="photo">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary mb-3">送出</button>
+        @*  <input type="submit" value="註冊" id="btngo" class="btn btn-primary" />*@
+        <br>
+    </form>
+
+
+    <br>
+    <div>
+        <ul id="message" class="list-group">
+        </ul>
+    </div>
+
+    @section Scripts{
+        <script>
+            let name = $("#Name");
+            let age = $("#Age");
+            let email = $("#Email");
+            let mess = $("#message");
+            let durl = "";
+
+
+            //$("#btngo").click(function(){
+            //     let n = name.val();
+            //     let a = age.val();
+            //     let e = email.val();
+
+            //  durl =`@Url.ActionLink("SaveMember","HomeWork")?name=${n}&age=${a}&email=${e}`;
+            //  console.log(
+            // `durl,${durl}`
+            // );
+            //   btn();
+            //});
+
+            //用Javascript 來寫
+            const btn = document.querySelector('button[type="submit"]');
+            console.log(btn);
+            //btn.addEventListener("click", (event) => {
+            btn.addEventListener("click",async (event)=>{  //用async方法
+                event.preventDefault();//停止submit預設行為
+
+                //用async方法改寫
+                const formData = new FormData(document.userInfo)
+                // fetch(url,{})
+                const response = await fetch("@Url.Content("~/HomeWork/JSPost")")")
+                method: "POST",
+                    body: formData
+                });
+                const data = await response.text();
+                document.querySelector('#div1').innerHTML = data;
+
+
+                //const xhr = new XMLHttpRequest();
+                //xhr.addEventListener("load", () => {
+                //    //document.querySelector("#message").innerHTML = xhr.responseText;
+                //    if (xhr.status == 200) {
+                //        console.log('讀取成功');
+                //        const datas = JSON.parse(xhr.responseText);
+                //        console.log(JSON.stringify(datas));
+                //        //console.log(datas);
+                //        //const obj = datas.map(value => `<li class="list-group-item">${value.name}</li><li class="list-group-item">${value.email}</li><li class="list-group-item">${value.age}</li><li class="list-group-item">${value.filename}</li>`);
+                //        //console.log(datas.name);
+                //        //console.log(obj);
+                //        const obj = `<li class="list-group-item">姓名:${datas.name}</li><li class="list-group-item">Email:${datas.email}</li><li class="list-group-item">年齡:${datas.age}</li><li class="list-group-item">檔名:${datas.fileName}</li>`;
+                //        document.querySelector("#message").innerHTML = obj;
+
+                    }
+                    else {
+                        console.log(xhr.staus);
+                    }
+                });
+                //var formData = new FormData(document.userInfo); //from 的名稱
+                //xhr.open("POST", "@Url.Content("~/HomeWork/JSPost")");
+                ////xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');  //可省略
+                //xhr.send(formData);
+            });
+
+
+
+
+                   //用JQuery 來寫 data傳值
+                   //function btn()
+                   //{
+                   //$.ajax({
+                   //         url: durl,
+                   //         type:"get",
+                   //         dataType:"json",
+                   //         cache:false,
+                   //         async:false,
+                   //         contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                   //     }).done((data) => {
+                   //         mess.empty();
+                   //             console.log(data);
+                   //             if (data.name == null) {
+                   //             let obj = `<li class="list-group-item">姓名已註冊!!</li>`;
+                   //            mess.append(obj);
+                   //         }
+                   //         else
+                   //         {
+                   //                 mess.empty();
+                   //                 let obj = `<li class="list-group-item">${data.name}</li><li class="list-group-item">${data.email}</li><li class="list-group-item">${data.age}</li>`;
+                   //                 mess.append(obj);
+
+                   //         }
+                   //        // alert("成功");
+                   //     }).fail(() => {
+                   //         alert("失敗"); });
+                   //}
+
+
+        </script>
+    }
+
+
+
+
+
+

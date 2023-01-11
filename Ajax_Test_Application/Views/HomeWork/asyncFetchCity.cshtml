@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "City";
+}
+
+<h1>用async await 縣市選擇</h1>
+<br>
+
+
+<div>
+    <h3>請稍微等待!!</h3>
+    <br>
+    <label>縣市</label>
+    <select id="city" name="city"><option>--</option><option>xx</option></select>
+    <label>街</label>
+    <select id="site" name="site"><option>--</option></select>
+    <label>路</label>
+    <select id="road" name="road"><option>--</option></select>
+</div>
+
+@section Scripts{
+    <script>
+        const city = document.querySelector('#city');
+        console.log(city);
+        const site = document.querySelector('#site');
+        const road = document.querySelector('#road');
+        async function City() {
+            try{
+                const response = await fetch("@Url.Content("~/API/City")");  //回傳response
+                console.log("city re="+response);
+                //用then讀取
+                const data = await response.json();
+               console.log("city="+data)
+                const opts = data.map(value => `<option value=${value.city}>${value.city}</option>`);
+                city.innerHTML = opts.join("");
+                              
+            }catch(error)
+            {
+               console.log("error",error)
+            }
+         
+            //const xhrcity = new XMLHttpRequest();
+
+            //xhrcity.addEventListener("load", () => {
+            //    const datas = JSON.parse(xhrcity.responseText);
+            //    console.log(datas);
+            //    const cityopts = datas.map(value => `<option value=${value.city}>${value.city}</option>`);
+            //    city.innerHTML = cityopts.join("");
+            //    loadSite();
+            //});
+            //xhrcity.open("GET", "@Url.Content("~/API/City")");
+            //xhrcity.send();
+
+        }
+
+         async  function loadSite() {
+            try {
+                const selected = city.options[city.selectedIndex].text;
+                const response = await fetch(`@Url.Content("~/API/Site?city=${selected}")`);
+                const data = await response.json(); 
+                const opts = data.map(value => `<option value=${value.siteId}>${value.siteId}</option>`);
+                site.innerHTML = opts.join("");
+             
+              
+            } catch (error) {
+                console.log("error", error)
+            }
+            //const xhr = new XMLHttpRequest();
+
+            //xhr.addEventListener("load", () => {
+            //    const datas = JSON.parse(xhr.responseText);
+            //    console.log(datas);
+            //    const cityopts = datas.map(value => `<option value=${value.siteId}>${value.siteId}</option>`);
+            //    site.innerHTML = cityopts.join("");
+            //    loadRoad();
+            //});
+            //const selected = city.options[city.selectedIndex].text;
+            //console.log(selected);
+            //xhr.open("GET", `@Url.Content("~/API/Site?city=${selected}")`);
+            //xhr.send();
+        }
+
+        async function loadRoad() {
+            try {
+                const selected = site.options[site.selectedIndex].text;
+                const response = await fetch(`@Url.Content("~/API/Road?site=${selected}")`);
+               const data = await response.json(); 
+               console.log("city="+data);
+                const opts = data.map(value => `<option value=${value.road}>${value.road}</option>`);
+                road.innerHTML = opts.join("");
+               
+               
+            } catch (error) {
+                console.log("error", error)
+            }
+            //const xhr = new XMLHttpRequest();
+
+            //xhr.addEventListener("load", () => {
+            //    const datas = JSON.parse(xhr.responseText);
+            //    console.log(datas);
+            //    const opts = datas.map(value => `<option value=${value.road}>${value.road}</option>`);
+            //    road.innerHTML = opts.join("");
+            //});
+            //const selected = site.options[site.selectedIndex].text;
+            //console.log(selected);
+            //xhr.open("GET", `@Url.Content("~/API/Road?site=${selected}")`);
+            //xhr.send();
+        }
+
+         City();
+        loadSite();
+        loadRoad();
+        city.addEventListener("change", () => { loadSite(); loadRoad(); });
+        site.addEventListener("change", () => { loadRoad(); });
+
+
+
+
+
+    </script>
+
+}
+

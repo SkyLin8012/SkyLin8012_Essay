@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "City";
+}
+
+<h1>City</h1>
+
+<div>
+    <table id="_tb1" class="td"><tbody id="_tbody"></tbody></table>
+</div>
+<div>
+    <table id="_tb2" class="td"><tbody id="_tbody2"></tbody></table>
+</div>
+<div>
+    <label>縣市</label>
+    <select id="city" name="city"><option>--</option><option>xx</option></select>
+    <label>街</label>
+    <select id="site" name="site"><option>--</option></select>
+    <label>路</label>
+    <select id="road" name="road"><option>--</option></select>
+</div>
+
+@section Scripts{
+    <script>
+        const city = document.querySelector('#city');
+        const selCity = $("#city"); //取得id= city 的標籤元素
+        console.log("scelCity=" + selCity);
+        console.log("city="+city);
+        const site = document.querySelector('#site');
+        const road = document.querySelector('#road');
+        City();
+        //loadCity();
+        city.addEventListener("change", () => { loadSite(); });
+        site.addEventListener("change", () => { loadRoad(); });
+        
+
+
+       
+        function City()
+        {
+            const xhrcity = new XMLHttpRequest();
+
+            xhrcity.addEventListener("load", () => {
+                const datas = JSON.parse(xhrcity.responseText);
+                console.log(datas);
+                const cityopts = datas.map(value =>`<option value=${value.city}>${value.city}</option>`);
+                city.innerHTML = cityopts.join("");
+                loadSite();
+            });
+            xhrcity.open("GET", "@Url.Content("~/API/City")");
+            xhrcity.send();
+           
+        }
+      
+        //用fetch 來寫
+        function loadCity()
+        {
+            console.log("city的response = ");
+            console.log(fetch("@Url.Content("~/api/City")"));
+            fetch("@Url.Content("~/api/City")") //呼叫Action
+                      .then(response=>response.json())  
+                      .then(datas =>{
+                          const cityOpts =datas.map(value=>`<option value=${value.city}>${value.city}</option>`);
+                          console.log(cityOpts);
+                    city.innerHTML = cityOpts.join("");       //要用document.querySelector 抓到的元素才能 innerHTML
+                      });
+           //JSON string > JSON.parse(cities)> JSON object
+        }
+
+
+
+        function loadSite() {
+            const xhr = new XMLHttpRequest();
+
+            xhr.addEventListener("load", () => {
+                const datas = JSON.parse(xhr.responseText);
+                console.log(datas);
+                const cityopts = datas.map(value => `<option value=${value.siteId}>${value.siteId}</option>`);
+                site.innerHTML = cityopts.join("");
+                loadRoad();
+            });
+            const selected = city.options[city.selectedIndex].text;
+            console.log(selected);
+            xhr.open("GET", `@Url.Content("~/API/Site?city=${selected}")`);
+            xhr.send();
+        }
+
+        function loadRoad() {
+            const xhr = new XMLHttpRequest();
+
+            xhr.addEventListener("load", () => {
+                const datas = JSON.parse(xhr.responseText);
+                console.log(datas);
+                const opts = datas.map(value => `<option value=${value.road}>${value.road}</option>`);
+                road.innerHTML = opts.join("");
+            });
+            const selected = site.options[site.selectedIndex].text;
+            console.log(selected);
+            xhr.open("GET", `@Url.Content("~/API/Road?site=${selected}")`);
+            xhr.send();
+        }
+       
+      
+      
+
+    </script>
+
+}
+

@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "fetchtest";
+}
+
+<h1>fetchtest</h1>
+
+@section Scripts{
+<script>
+    fetch("@Url.Content("~/api/index")").then( response => response.text()).then(data=>console.log(data)).catch();
+   
+
+</script>
+
+}
+

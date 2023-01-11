@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Ajax_Test_Application.Models.Member>
+@{
+    ViewData["Title"] = "list";
+}
+
+<h1>Member_LIst</h1>
+
+<ul>
+    @foreach (var member in Model)
+    {
+        <li>@member.Name</li>
+    }
+</ul>
+
+

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "JQuery";
+}
+
+<h1>JQuery</h1>
+
+
+@{
+    ViewData["Title"] = "jQuery";
+}
+
+<h1>jQuery</h1>
+<button id="buttonGet" class="btn btn-primary">get</button>
+<button id="buttonPost" class="btn btn-secondary">post</button>
+<button id="buttonJson" class="btn btn-success">getJson</button>
+<button id="buttonLoad" class="btn btn-info">load</button>
+<button id="buttonAjax" class="btn btn-warning">ajax</button>
+<button id="buttonCors" class="btn btn-danger">cors</button>
+<div class="alert alert-dark mt-3 w-50" role="alert" id="divAlert">
+</div>
+@section Scripts{
+    <script>
+       
+        $(".col-3").load("@Url.Content("~/home/Partial")")
+
+        $('#buttonGet').click(function () {
+            $.get("@Url.Content("~/API/Index")", { "name": "Jack", "age": 20 },
+                      function (data){
+                    $("#divAlert").html("<h2>" + data + "</h2>")
+                }
+        );
+
+            $('#divAlert').text("GET")
+        })
+        $('#buttonPost').click(function () {
+            $.post("@Url.Content("~/API/Index")", { "name": "Jack", "age": 20 },
+                function (data) {
+                    $("#divAlert").html("<h2>" + data + "</h2>")
+                });
+            $('#divAlert').text("POST")
+        })
+        $('#buttonJson').click(function () {
+            console.log("@Url.Content("~/api/Site")");
+
+            $.getJSON("@Url.Content("~/api/Site")",{"city":"宜蘭縣"},function(datas){
+               let docFlag = $(document.createDocumentFragment()); //$()包裹，將JavaScript物件轉型成JQuery物件
+               $.each(datas,function(index,site){
+                    const eleH3 = $('<h3></h3>').text(site.siteId);
+                    docFlag.append(eleH3);
+               });
+                $("#divAlert").html(docFlag);
+            });
+            
+            $('#divAlert').text("JSON")
+        })
+        $('#buttonLoad').click(function () {
+            $("#divAlert").load("@Url.Content("~/home/Partial")");
+
+            $('#divAlert').text("LOAD")
+        })
+        $('#buttonAjax').click(function () {
+            $.ajax({
+                url: "@Url.Content("~/api/Site")", //"@Url.Content("~/api/index")"
+                type:"GET",
+                data:{"city":"新北市"},
+                dataType:"json"
+            }).done(datas=>{
+               let docFrag = $(document.createDocumentFragment());
+               $.each(datas,function(index,site){
+                  const eleH3 = $("<h3></h3>").text(site.siteId);
+                  docFrag.append(eleH3);
+               })
+                $('#divAlert').html(docFrag);
+            })
+
+            $('#divAlert').text("AJAX")
+        })
+        $('#buttonCors').click(function () {
+            $.getJSON("https://localhost:7011/api/TestClients",{},function(datas){
+               console.log(datas);
+            })
+            $('#divAlert').text("CORs")
+        })
+
+    </script>
+}

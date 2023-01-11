@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>桃園公廟一覽表</h1>
+<script src="~/js/travel.js"></script>
+<div class="row row-cols-1 row-cols-md-3 g-4" id="myU1">
+</div>
+@section Scripts{
+    <script>
+        const theU1 = document.querySelector('#myU1')
+        let datas = DATAS.map((DATAS, index, array) => {
+            const { InfoId, TYWebsite, Name, Toldescribe, Add, Zipcode, Opentime, Px, Py, Website, Parkinginfo, Ticketinfo, Remarks, Tel, Fax, Changetime } = DATAS;
+            return (`
+                            <div class="col">
+                            <div class="card h-100">
+                            <div class="card-body">
+                            <h5 class="card-title">${Name}</h5>
+                            <p class="card-text">${Add}</p>
+                            <p class="card-text">${Opentime}</p>
+                            <p class="card-text">${Toldescribe}</p>
+                            <p class="card-text">${Parkinginfo}</p>
+                            <p class="card-text">${Ticketinfo}</p>
+                            <p class="card-text">${Tel}</p>
+                            <a href="${Website}" class="btn btn-primary">網站 </a>
+                            </div>
+                            </div>
+                            </div>
+                          `);
+                });
+
+            theU1.innerHTML = datas.join("");
+
+          
+        //const  group = $('#myU1')
+        //for (var x of DATAS) {
+        //    console.log(x.InfoId);
+        //    let card = `
+        //            <div class="col">
+        //    <div class="card h-100">             
+        //      <div class="card-body">
+        //                <h5 class="card-title">${x.Name}</h5>
+        //                <p class="card-text">${x.Add}</p>
+        //                <p class="card-text">${x.Opentime}</p>                                 
+        //                <p class="card-text">${x.Toldescribe}</p>                            
+        //                <p class="card-text">${x.Parkinginfo}</p>
+        //                 <p class="card-text">${x.Ticketinfo}</p>
+        //                <p class="card-text">${x.Tel}</p>
+        //                <a href="${x.Website}" class="btn btn-primary">網站 </a>
+               
+        //      </div>
+        //    </div>
+        //  </div>
+        //    `
+        //    group.append(card);
+        //}
+
+
+    </script>
+}
+
