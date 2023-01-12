@@ -69,6 +69,23 @@ namespace Ajax_Test_Application.Controllers
 
         }
 
+        public IActionResult checkName(string Name)
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                return Content("姓名不可為空", "text/plain", Encoding.UTF8);
+            }
+            else
+            {
+                var data = _db.Members.Where(m => m.Name == Name).FirstOrDefault();
+                if (data != null)
+                {
+                    return Content("此姓名已註冊", "text/plain", Encoding.UTF8);
+                }
+            }
+            return Content("", "text/plain", Encoding.UTF8);
+        }
+
 
 
 

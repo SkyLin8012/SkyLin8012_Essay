@@ -14,11 +14,13 @@
      <script src="~/js/travel.js"></script>
      <script>
          const txt = document.querySelector("#text1");
+         console.log(txt);
          txt.addEventListener("keyup",()=>{
+             console.log(txt.value);
              @*透過函式運算，通過檢驗函式元素構成新的陣列*@
-            const results = DATAS.filter(data=>data.Name.indexOf(txt.value !==-1));
+                    const results = DATAS.filter(data => data.Name.indexOf(txt.value) !== -1);
             //indexOf 找不到值 為-1 ===是嚴格判定，連型別也會檢視
-            
+            ShowDatas(results);
          });
          ShowDatas(DATAS);
          //const(常數)有點像使用let ,常數不能重複指定與宣告
